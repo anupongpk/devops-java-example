@@ -75,7 +75,7 @@ jobs:
         run: docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from it_test
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/anupongpk/devops-java-example-bc:${{ env.GITHUB_SHA }}
+        run: docker build . --file Dockerfile --tag ghcr.io/anupongpk/devops-java-example:${{ env.GITHUB_SHA }}
 
       - name: Login ghcr.io
         uses: docker/login-action@v1.8.0
@@ -90,7 +90,7 @@ jobs:
         with:
           context: .
           tags: |
-            ghcr.io/anupongpk/devops-java-example-bc:${{ env.GITHUB_SHA }}
+            ghcr.io/anupongpk/devops-java-example:${{ env.GITHUB_SHA }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
@@ -114,7 +114,7 @@ jobs:
           git --version
           git config user.name "anupongpk"
           git config user.email "pk.i.anupong@gmail.com"
-          sed -i -E "s/ghcr.io\/anupongpk\/devops-java-example-bc.*$/ghcr.io\/anupongpk\/devops-java-example-bc:${GITHUB_SHA}/" kube-gitops/deployment.yml
+          sed -i -E "s/ghcr.io\/anupongpk\/devops-java-example.*$/ghcr.io\/anupongpk\/devops-java-example:${GITHUB_SHA}/" kube-gitops/deployment.yml
           git add kube-gitops/deployment.yml
           git commit -m "🤖 change docker image version to ${GITHUB_SHA}"
       - name: push changes
